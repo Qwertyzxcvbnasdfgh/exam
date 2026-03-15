@@ -1,11 +1,15 @@
 from sqlalchemy import Column, Integer, String, Date, ForeignKey
-from app.data_access.db.base import Base
+from sqlalchemy.orm import relationship
+
+from data_access.db.base import Base
 
 
 class Task(Base):
     __tablename__ = "tasks"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, nullable=False)
+    title = Column(String(255), nullable=False)
     deadline = Column(Date, nullable=False)
-    project_id = Column(Integer, ForeignKey("projects.id"))
+    project_id = Column(Integer, ForeignKey("projects.id"), nullable=False)
+
+    project = relationship("Project", back_populates="tasks")

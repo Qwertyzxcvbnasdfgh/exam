@@ -1,11 +1,19 @@
-from sqlalchemy import Column, Integer, String, Date, Numeric
-from app.data_access.db.base import Base
+from sqlalchemy import Column, Integer, String, Date, BigInteger
+from sqlalchemy.orm import relationship
+
+from data_access.db.base import Base
 
 
 class Project(Base):
     __tablename__ = "projects"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
+    name = Column(String(255), nullable=False)
     start_date = Column(Date, nullable=False)
-    budget = Column(Numeric, nullable=False)
+    budget = Column(BigInteger, nullable=False)
+
+    tasks = relationship(
+        "Task",
+        back_populates="project",
+        cascade="all, delete-orphan"
+    )
